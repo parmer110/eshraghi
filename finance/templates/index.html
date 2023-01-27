@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Portfolio
+{% endblock %}
+
+{% block name %}
+<h3>      Hello, {{ rows[0]["username"] }} </h3>
+{% endblock %}
+
+{% block main %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="text-start">Symbol</th>
+            <th class="text-start">Name</th>
+            <th class="text-end">Shares</th>
+            <th class="text-end">Price</th>
+            <th class="text-end">TOTAL</th>
+            <th class="text-end">TRANSACTION          </th>
+        </tr>
+    </thead>
+   <tbody>
+        {% set totals = [] %}
+        {% for row in rows2 %}
+        {% if row["shares"] > 0 %}
+            <tr>
+                <td class="text-start">{{ lookup(row["symbol"])["symbol"] }}</td>
+                <td class="text-start">{{ lookup(row["symbol"])["name"] }}</td>
+                <td class="text-end">{{ row["shares"] }}</td>
+                <td class="text-end">{{ usd(lookup(row["symbol"])["price"]) }}</td>
+                <td class="text-end">{{ usd(row["shares"] * lookup(row["symbol"])["price"]) }}</td>
+                <td class="text-end">
+                    <form action="/buy" method="post" style='display:inline;'>
+                        <input autocomplete="off" autofocus name="symbol" value="{{ lookup(row['symbol'])['symbol'] }}" type="hidden">
+                        <input autocomplete="off" min="0" name="shares" placeholder="Shares" size="5" type="number">
+                        <button type="submit">Buy</button>
+                    </form>
+                    <form action="/sell" method="post" style='display:inline;'>
+                        <input autocomplete="off" autofocus name="symbol" value="{{ lookup(row['symbol'])['symbol'] }}" type="hidden">
+                        <input autocomplete="off" min="0" name="shares" placeholder="Shares" size="5" type="number">
+                        <button type="submit">Sell</button>
+                    </form>
+                </td>
+            </tr>
+            {% if totals.append(row["shares"] * lookup(row["symbol"])["price"]) %}{% endif %}
+        {% endif %}
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="border-0 fw-bold text-end" colspan="4">Cash</td>
+            <td class="border-0 text-end">{{ usd(rows[0]["cash"]) }}</td>
+        </tr>
+        <tr>
+            <td class="border-0 fw-bold text-end" colspan="4">TOTAL</td>
+            <td class="border-0 w-bold text-end">{{ usd((totals | sum) + rows[0]["cash"]) }}</td>
+        </tr>
+    </tfoot>
+</table>
+{% endblock %}

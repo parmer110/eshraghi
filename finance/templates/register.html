@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block name %}
+<h3>      Hello, {{ name }} </h3>
+{% endblock %}
+
+{% block main %}
+    <script type="text/javascript">
+        function required()
+        {
+            if (document.forms["Form"]["username"].value == "")
+            {
+                alert("Please enter username");
+                return false;
+            }
+        }
+    </script>
+    <form action="/register" method="post" name="Form" onsubmit="return required()">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="confirmation" placeholder="Password (again)" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+
+{% endblock %}
