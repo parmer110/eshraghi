@@ -1,0 +1,359 @@
+{% set count = namespace(value=0) %}
+{% set row_ind = namespace(value=0) %}
+{% set pass = [] %}
+{% set msg1 = "Delete Column" -%}
+{% set msg2_1 = "Are you sure you want to delete \"" %}
+{% set msg2_2 = "\" column?" -%}
+{% set msg3 = "Delete table" -%}
+{% set msg4 = "Are you sure you want to delete \"" ~ hash_out(selected) ~ "\" Table?" -%}
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Settings
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript">
+
+    // Send the changed input data to the server
+    (function() {
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('input').forEach(elem => {
+                elem.addEventListener('change', function() {
+                    if(this.name.substring(0,3) != "add")
+                    {
+                        const formData = new FormData();
+                        formData.append(this.name, this.value);
+                        fetch('/settings', {
+                            method: 'post',
+                            body: formData
+                        });
+                    }
+                });
+            });
+        });
+    })();
+
+    //Ensure user decided refresh the page
+    (function() {
+        window.addEventListener('DOMContentLoaded', () => {
+            let isChanged = false;
+            document.querySelectorAll('input').forEach(elem => {
+                elem.addEventListener('change', () => {
+                    isChanged = true;
+                });
+            });
+
+            document.querySelector('form').addEventListener('submit', () => {
+                isChanged = false;
+            })
+
+            window.addEventListener('beforeunload', (evt) => {
+                if (isChanged) {
+                    evt.returnValue = isChanged;
+                }
+            });
+        });
+    })();
+
+    // When the user clicks on div, open the popup
+    function popUp(id){
+        let popup = document.getElementById(id);
+        popup.classList.toggle("show");
+    }
+    // Made textbox and span are desired visible
+    function visibility (id){
+        var x = document.getElementById(id);
+        x.style.display = "inline";
+    }
+    // Made textbox and span are desired hidden
+    function hid (id){
+        var x = document.getElementById(id);
+        x.style.display = "none";
+    }
+
+    // Send AJAX request to route
+    function fetch_post(key, ...values){
+        const formData = new FormData();
+        for (let value of values){
+            formData.append(key, value)
+        }
+        fetch('/settings', {
+            method: 'post',
+            body: formData
+        });
+    }
+</script>
+{% endblock %}
+
+{% block name %}
+<h3>      User: {{ user }} </h3>
+{% endblock %}
+
+{% block main %}
+<form action="/settings" method="get">
+    <div class="mb-3">
+        <select onchange="this.form.submit()" class="form-select mx-auto w-auto" name="table">
+            <option disabled selected>Choose table</option>
+            {% for row in tbls_name %}
+                <option {% if selected == row['name'] %}selected{% endif %} value="{{ row['name'] }}">{{ hash_out(row["name"]) }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" name="add_table" placeholder="Table name" type="text">
+    </div>
+    <button class="btn btn-primary" type="submit" name="tblcreate" title="Create table">Create</button>
+    <span>-</span>
+    <button class="btn btn-primary" type="button" name="tbldlt" id="tbldlt" value="tbldlt_{{ selected }}"
+        onclick="fetch_post('mmb', 'delete'); show_modal('tbldlt', '{{ msg3 }}', '{{ msg4 }}');"
+        {% if hash_out(selected) == "user" %}disabled title="The main table would not deleted."{% else %}
+        title="Delete {{ hash_out(selected) }} table"{% endif %}>Delete</button>
+    <input type="hidden" name="frm_primitive">
+</form>
+
+<article>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                {% for row in tbl_headers %}
+                    {% set count.value = count.value + 1 %}
+                    {% if "password" in hash_out(row['name'])|lower %}{{ pass.append(count.value % tbl_headers|length) or "" }}{% endif %}
+                    <th class={% if loop.index == 1 %}"text-start"
+                    {% elif loop.index == tbl_headers|length %}"text-end"
+                    {% else %}"text-middle"{% endif %}><input
+                        autocomplete="off"
+                        class="form-control mx-auto w-auto text-info bg-secondary"
+                        style="display: none; text-align: {% if loop.index == tbl_headers|length %}right{% else %}center{% endif %};
+                            height: 4vh; font-weight: bold; width: 12vw !important;"
+                        name="hdr_{{ selected }}_{{ tbl_headers[loop.index - 1]['name'] }}_{{ count.value }}__"
+                        type="text"
+                        id="td_input_{{ count.value }}"
+                        value="{{ hash_out(row['name']) }}"
+                        maxlength="30"
+                        {% if hash_out(selected) == 'user' %}
+                            disabled
+                        {% endif %}
+                        title="{{ hash_out(row['name']) }}">
+                        <span id="td_span_{{ count.value }}" title="Data type: {{ hash_out(row['type']) }}" onclick=
+                        "visibility ('td_input_{{ count.value }}'); hid('td_span_{{ count.value }}');">{{ hash_out(row['name']) }}</span>
+                        {% if loop.index != 1 %}
+                        <div class="popup" style="display: inline"><div class="popuptext" id="tableHeader{{ count.value }}">
+                            <div><label>«Column situation»<hr></label></div>
+                            <div class="hdr_dtype"><p>Datatype: </p>
+                                <p>{{ hash_out(row['type']) }}</p>
+                            </div>
+                            <button id="hdrdel_{{count.value}}"
+                                onclick="show_modal('hdrdel_{{count.value}}', '{{ msg1 }}',
+                                    '{{ msg2_1 ~ hash_out(tbl_headers[loop.index - 1]['name']) ~ msg2_2}}');
+                                    popUp('tableHeader{{ count.value }}');"
+                                class="btn btn-danger" name="hdrdlt" value="hdrdlt_{{ selected }}_{{ tbl_headers[loop.index - 1]['name'] }}">Delete</button>
+                        </div></div>
+                        {% if not (hash_out(selected) == "user") or loop.index > 5 %}
+                        <img src="/static/icon/setting02.jpg" width="20vh" class="align-middle" onclick="popUp('tableHeader{{ count.value }}')"
+                            title="Setting" style="cursor: pointer;" alt="(Delete)">
+                        {% endif %}
+                    {% endif %}
+                    </th>
+                {% endfor %}
+                {% if ((count.value == tbl_headers|length) and (tbl_headers|length > 0)) %}
+                <th>
+                    <div class="popup" style="display: inline"><div class="popuptext hdradd" id="add_column">
+
+                        <form action="/settings" method="post" id="frm_edt_column">
+                            <div><label>--Add column--</label></div>
+                            <div><label for="name">Insert new column name:</label></div>
+                            <input autocomplete="off" class="form-control mx-auto w-auto" required
+                                name="input" id="name" type="text" placeholder="Column name">
+                            <select class="form-select mx-auto w-auto" name="select" required>
+                                <option disabled selected value="">Data type</option>
+                                <option value="NULL">NULL</option>
+                                <option value="INTEGER">INTEGER</option>
+                                <option value="REAL">REAL</option>
+                                <option value="TEXT">TEXT</option>
+                                <option value="BLOB">BLOB</option>
+                            </select>
+                            <input id="not_null" type="checkbox" value="NOT NULL" name="entry">
+                            <label for="not_null">NOT NULL </label>
+                            <input id="unique" type="checkbox" value="UNIQUE" name="valid">
+                            <label for="unique">UNIQUE </label>
+                            <div><label for="default">Enter derault value:</label></div>
+                            <input autocomplete="off"  name="default" type="text" placeholder="Default value" id="default">
+                            <button class="btn btn-primary" type="submit" name="create" style="display: block; margin-left:37%;">Insert</button>
+                            <input type="hidden" name="hidden" value="had_{{ selected }}">
+                        </form>
+
+                    </div></div>
+                    <img src="/static/icon/circle-plus.png" width="20vh"  class="align-middle" onclick="popUp('add_column')"
+                        title="Add Column" style="cursor: pointer;" alt="Add column">
+                </th>
+                {% endif %}
+            </tr>
+            {% set row_ind.value = 0 %}
+            {% for row in rows %}
+            {% set row_ind.value = row_ind.value + 1 %}
+                <tr>
+                    {% for cell in row.values() %}
+                    {% if not cell %}{% set cell = "" %}{% endif %}
+                        {% set count.value = count.value + 1 %}
+                        <td class={% if loop.index == 1 %}"text-start"
+                        {% elif loop.index == tbl_headers|length %}"text-end"
+                        {% else %}"text-middle"{% endif %}{% if loop.index != 1 %}onclick=
+                        "visibility ('td_input_{{ count.value }}'); hid('td_span_{{ count.value }}');"
+                        {% else %}onclick="defAll()"{% endif %}>
+                            <input
+                                autocomplete="off"
+                                class="form-control mx-auto w-auto text-info bg-dark"
+                                style="display: none; text-align:
+                                    {% if loop.index == tbl_headers|length %}right{% else %}center{% endif %}; height: 4vh;  width: 14vw !important;"
+                                name="edt_{{ selected }}_{{ tbl_headers[loop.index - 1]['name'] }}_
+                                    {{ count.value }}_{{ rows[row_ind.value - 1][tbl_headers[0]['name']] }}_{{tbl_headers[0]['name']}}"
+                                type={% if (count.value % tbl_headers|length) in pass %}"password"{% else %}"text"{% endif %}
+                                id="td_input_{{ count.value }}"
+                                value="{{ hash_out(cell) }}"
+                                maxlength="100"
+                                title={% if (count.value % tbl_headers|length) in pass %}"•••••"{% else %}"{{ hash_out(cell) }}"{% endif %}>
+                            <span id="td_span_{{ count.value }}" title="Data type: {{ hash_out(tbl_headers[loop.index - 1]['type']) }}">
+                                {% if (count.value % tbl_headers|length) in pass %}•••••{% else %}{{ hash_out(cell) }}{% endif %}
+                            </span>
+                        </td>
+                    {% endfor %}
+                    {% if not loop.index == 1 or not hash_out(selected) == "user" %}
+                    <td><form action="/settings" method="post"><input
+                        type="image"
+                        name="imgdel_{{ selected }}_{{tbl_headers[0]['name']}}_{{ rows[loop.index - 1][tbl_headers[0]['name']] }}_"
+                        src="./static/icon/negative.png"
+                        alt="Delete record"
+                        width="20vh"
+                        title="Delete this record">
+                    </form></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            <tr>
+                {% if tbl_headers|length > 0 %}
+                <form action="/settings" method="post">
+                    {% for i in range(tbl_headers|length) %}
+                    {% set count.value = count.value + 1 %}
+                            <td class={% if loop.index == 1 %}"text-start"
+                            {% elif loop.index == tbl_headers|length %}"text-end"
+                            {% else %}"text-middle"{% endif %}>
+                                <input
+                                name="add_{{ selected }}_{{ tbl_headers[loop.index - 1]['name'] }}"
+                                type={% if i == 0 %}"hidden"{% else %}
+                                    {% if (count.value % tbl_headers|length) in pass %}"password"{% else %}"text"{% endif %}
+                                {% endif %}
+                                maxlength="100">
+                            </td>
+                    {% endfor %}
+                    <td><input
+                        type="image"
+                        name="img_add_{{ selected }}"
+                        src="./static/icon/rectangle-plus.png"
+                        alt="Add row"
+                        width="20vh"
+                        title="Insert record">
+                    </td></form>
+                {% endif %}
+            </tr>
+        </thead>
+    </table>
+    <input type="hidden" name="frm_secondary_{{ selected }}">
+</article>
+
+<!-- Modal message box for deletion -->
+<section class="msgbox">
+    <div id="id01" class="modal">
+        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+        <form class="modal-content" action="/settings" method="post">
+        <div class="container">
+            <h1 id="modal_h1"></h1>
+            <p id="modal_p1"></p>
+            <div class="clearfix">
+            <button type="button" onclick="hide_modal();" class="btn cancelbtn">Cancel</button>
+            <button type="submit" class="btn deletebtn" onclick="hide_modal();" name="mmb_delete" value="{{ selected }}">Delete</button>
+            <input type="hidden" id="html_var00" name="mmb_action" value=""> <!-- Modal Message Box-->
+            <input type="hidden" id="html_var01" name="mmb_table" value=""> <!-- Modal Message Box-->
+            <input type="hidden" id="html_var02" name="mmb_header" value=""> <!-- Modal Message Box-->
+            </div>
+        </div>
+        </form>
+    </div>
+</section>
+
+<script type="text/javascript">
+    // Hide all popups
+    function defAll(ind = 0) {
+        for(let i = 1; i <= {{ count.value }}; i++)
+        {
+            if(i != ind)
+            {
+                let x = document.getElementById('td_' + i.toString());
+                let y = document.getElementById('td_span_' + i.toString());
+                x.style.display = "none";
+                y.style.display = "inline";
+            }
+        }
+    }
+
+    // Run Modal Message Box
+    (function () {
+    if ("{{ tbldlt }}" == "True") {
+        show_modal('tbldlt_0', '{{ msg3 }}', '{{ msg4 }}');
+    }
+    })();
+
+    // Show modal message
+    function show_modal(id = "", msg1, msg2){
+        let iname = document.getElementById(id).value.split("_");
+        if (iname[0] == "hdrdlt")
+        {
+            document.getElementById('html_var00').setAttribute("value", iname[0]); // Item
+            document.getElementById('html_var01').setAttribute("value", iname[1]); // Table Name
+            document.getElementById('html_var02').setAttribute("value", iname[2]); // Column Header Name
+        }
+        else if (iname[0] == "tbldlt")
+        {
+            // Table Validation
+            if ( "{{ selected }}" == "None" || !"{{ selected }}" )
+                {
+                    document.getElementById("dng_alert").setAttribute("class", "alert alert-danger mb-0 text-center");
+                    document.getElementById("dng_alert").innerHTML = "Error in table deletion! No table choosen to delete.";
+                    return;
+                }
+                else if (! {{ tbls_name | rejectattr('name', '!=', selected) | list | length }})
+                {
+                    document.getElementById("dng_alert").setAttribute("class", "alert alert-danger mb-0 text-center");
+                    document.getElementById("dng_alert").innerHTML = "Error in table deletion! The choosen table is not valid.";
+                    return;
+                }
+
+            // Cartel values initialization
+            document.getElementById('html_var00').setAttribute("value", iname[0]); // Item
+            document.getElementById('html_var01').setAttribute("value", iname[1]); // Table Name
+            document.getElementById('html_var02').setAttribute("value", "");
+        }
+
+        document.getElementById("modal_h1").innerHTML= msg1;
+        document.getElementById("modal_p1").innerHTML= msg2;
+        document.getElementById('id01').style.display='block';
+    }
+
+    // Invisible the modal message
+    function hide_modal(){
+
+        document.getElementById('id01').style.display='none';
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        var modal = document.getElementById('id01');
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock %}
