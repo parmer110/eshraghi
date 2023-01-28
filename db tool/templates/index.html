@@ -1,61 +1,93 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Portfolio
+    Home
 {% endblock %}
 
 {% block name %}
-<h3>      Hello, {{ rows[0]["username"] }} </h3>
+<h3>      Hello, {{ user }} </h3>
 {% endblock %}
 
 {% block main %}
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th class="text-start">Symbol</th>
-            <th class="text-start">Name</th>
-            <th class="text-end">Shares</th>
-            <th class="text-end">Price</th>
-            <th class="text-end">TOTAL</th>
-            <th class="text-end">TRANSACTION          </th>
-        </tr>
-    </thead>
-   <tbody>
-        {% set totals = [] %}
-        {% for row in rows2 %}
-        {% if row["shares"] > 0 %}
-            <tr>
-                <td class="text-start">{{ lookup(row["symbol"])["symbol"] }}</td>
-                <td class="text-start">{{ lookup(row["symbol"])["name"] }}</td>
-                <td class="text-end">{{ row["shares"] }}</td>
-                <td class="text-end">{{ usd(lookup(row["symbol"])["price"]) }}</td>
-                <td class="text-end">{{ usd(row["shares"] * lookup(row["symbol"])["price"]) }}</td>
-                <td class="text-end">
-                    <form action="/buy" method="post" style='display:inline;'>
-                        <input autocomplete="off" autofocus name="symbol" value="{{ lookup(row['symbol'])['symbol'] }}" type="hidden">
-                        <input autocomplete="off" min="0" name="shares" placeholder="Shares" size="5" type="number">
-                        <button type="submit">Buy</button>
-                    </form>
-                    <form action="/sell" method="post" style='display:inline;'>
-                        <input autocomplete="off" autofocus name="symbol" value="{{ lookup(row['symbol'])['symbol'] }}" type="hidden">
-                        <input autocomplete="off" min="0" name="shares" placeholder="Shares" size="5" type="number">
-                        <button type="submit">Sell</button>
-                    </form>
-                </td>
-            </tr>
-            {% if totals.append(row["shares"] * lookup(row["symbol"])["price"]) %}{% endif %}
-        {% endif %}
-        {% endfor %}
-    </tbody>
-    <tfoot>
-        <tr>
-            <td class="border-0 fw-bold text-end" colspan="4">Cash</td>
-            <td class="border-0 text-end">{{ usd(rows[0]["cash"]) }}</td>
-        </tr>
-        <tr>
-            <td class="border-0 fw-bold text-end" colspan="4">TOTAL</td>
-            <td class="border-0 w-bold text-end">{{ usd((totals | sum) + rows[0]["cash"]) }}</td>
-        </tr>
-    </tfoot>
-</table>
+<header>
+    <div class="alert alert-info" role="alert" role="alert" id="index-title">
+        <h1>Database Table Creator and entry with Coding-Decoding </h1>
+    </div>
+</header>
+<h3>Descriptions:</h3>
+<nav class="list">
+    <ul>
+        <li><a href="./#table_management">Table management</a></li>
+        <li><a href="./#Create_Table">Create Table</a></li>
+        <li><a href="./#Delete_Table">Delete Table</a></li>
+        <li><a href="./#Create_Column">Create Column</a></li>
+        <li><a href="./#Delete_Column">Delete Column</a></li>
+        <li><a href="./#Add_empty_row">Add empty row</a></li>
+        <li><a href="./#Delete_current_row">Delete current row</a></li>
+        <li><a href="./#Edit_desired_values">Edit desired values</a></li>
+    </ul>
+</nav>
+<section class="body">
+    <p>
+        Database tables related with there type of varied. (Table name, columns name, values)
+        As you know, there were 1,114,112 character codes in UNICODE system. We have provided ability for you using all 1114112 characters in this case. (No mather of using and sequene of using. e.g. You can create a table, witch name is space!)
+    </p>
+    <p>
+        The program's database needs and contain main table which name is "user". users are not able to change most of it's specifications
+    </p>
+    <div>This application is architectd case sensitive.</div>
+    -------------
+    <h5 id="table_management">Table management</h5>
+    <p>
+        <div>Click "Settings" link in above↑</div>
+        <div>Note that the default username and password are same "admin" for owner as enterprise admin</div>
+    </p>
+    <h5 id="Create_Table">Create Table</h5>
+    <p>
+        <ol>
+            <li>Enter table name</li>
+            <li>Click on "Create" button</li>
+        </ol>
+        <div>Note that the table name can be null! but duplicated in database is forbided. Here we get mean to the Null value. We respect it!</div>
+    </p>
+    <h5 id="Delete_Table">Delete Table</h5>
+    <p>
+        <ol>
+            <li>Choose intended table name from drop-down menu</li>
+            <li>Press "Delete" button</li>
+            <li>In the represented modal textbox, press "Delete" button.</li>
+        </ol>
+    </p>
+    <h5 id="Create_Column">Create Column</h5>
+    <p>
+        <ol>
+            <li>Click on circled plus icon on right-side end of the table headers</li>
+            <li>In the appeared menu, input desired column name in appropritated input box</li>
+            <li>Choose the value type from the below drop-down menu</li>
+            <li>Some optional items are there and has obvious meaning</li>
+        </ol>
+    </p>
+    <h5 id="Delete_Column">Delete Column</h5>
+    <p>
+        <ol>
+            <li>Near right side each column header is there an setting icon</li>
+            <li>Hear the datatype is visible. Choose the red "Delete" button.</li>
+            <li>In the modal message box, choose the Delete button</li>
+        </ol>
+    </p>
+    <h5 id="Add_empty_row">Add empty row</h5>
+    <p>
+        Add the end bottom of the table, there were an empty row. Pressing the rectangle plus icon in reft side, will register values.
+    </p>
+    <h5 id="Delete_current_row">Delete current row</h5>
+    <p>
+        At right end side of each row there were a cirtular negative icon. <b>Note That pressing this key will remove respected row permanently and cant be undone</b>
+    </p>
+    <h5 id="Edit_desired_values">Edit desired values</h5>
+    <p>
+        Inpute velues in cells will auto register to the database after clicking outside of the cell, or pressing enter.
+    </p>
+
+</section>
+
 {% endblock %}

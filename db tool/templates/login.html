@@ -1,17 +1,46 @@
 {% extends "layout.html" %}
 
+
 {% block title %}
     Log In
 {% endblock %}
 
+
+{% block body %}onload="popUp()"{% endblock %}
+
+
 {% block main %}
-    <form action="/login" method="post">
-        <div class="mb-3">
-            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" type="text">
+    <div class="alert alert-primary mb-0 text-center" role="alert" id="dng_alert">
+        <h5>Owner's username and password:</h5>
+        <div>Username: admin</div>
+        <div>Password: admin</div>
+    </div>
+    <form action="/login" method="post" name="login" id="login">
+        <div class="popup">
+            <span class="popuptext" id="{{ target1 }}" onclick="popUp()">{{ pop_up_text }}</span>
         </div>
         <div class="mb-3">
-            <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="username" name="username" placeholder="Username" value="{{ hold }}" type="text">
+        </div>
+        <div class="mb-3">
+            <div class="popup" style="display: inline">
+                <span class="popuptext" id="{{ target2 }}" onclick="popUp()">{{ pop_up_text }}</span>
+            </div>
+            <input autocomplete="off" class="form-control mx-auto w-auto" id="password" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="popup" style="display: inline;">
+            <span class="popuptext" id="myPopup">{{ pop_up_text }}</span>
         </div>
         <button class="btn btn-primary" type="submit">Log In</button>
     </form>
+    <script>
+        // When the user clicks on div, open the popup
+        function popUp() {
+            if("{{ popUp }}" == "True") {
+                //"{{popUp}}" = "False";
+                let popup = document.getElementById("flashPopup");
+                popup.classList.toggle("show");
+            }
+        }
+    </script>
 {% endblock %}

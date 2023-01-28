@@ -1,4 +1,10 @@
+os
+re
 cs50
+tempfile
 Flask
 Flask-Session
+.datastructures
+helpers
 requests
+urllib.parse
