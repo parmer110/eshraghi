@@ -1,0 +1,246 @@
+:root{
+    --form-width: 40vw;
+    --form-height: 6.8vh;
+    --bk-grnd-clr: rgba(32,33,36,1);
+}
+
+@media(max-width:1071px){
+    .ad td:nth-of-type(3){
+        border: 0;
+        clip: rect(1px, 1px, 1px, 1px);
+        clip-path: insect(50%);
+        -wbkit-clip-path: inset(50%);
+        height: 1px;
+        width: 1px;
+        orderflow: hidden;
+        white-space: nowrap;
+        position: absolute;
+        padding: 0;
+        margin: -1px;
+    }
+    .ad th:nth-of-type(3){
+        border: 0;
+        clip: rect(1px, 1px, 1px, 1px);
+        clip-path: insect(50%);
+        -wbkit-clip-path: inset(50%);
+        height: 1px;
+        width: 1px;
+        orderflow: hidden;
+        white-space: nowrap;
+        position: absolute;
+        padding: 0;
+        margin: -1px;
+    }
+    .ad td:nth-of-type(1){
+        width: 200px !important;
+    }
+    .form2 input[type=submit]{
+        position: relative;
+    }
+}
+
+body{
+    background-color: var(--bk-grnd-clr);
+}
+.index{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.index a{
+    color: white;
+    font-size: 28px;
+}
+
+.index a:hover{
+    color: gold;
+}
+
+.search{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.frm01-field{
+    width: 20vw;
+}
+
+.major-title{
+    font-family: "Sofia", sans-serif;
+    font-size: 148px;
+    font-weight: bold;
+    letter-spacing: 22px;
+}
+
+.major-title span:nth-of-type(1){
+    color:red;
+}
+.major-title span:nth-of-type(2){
+    color:white;
+}
+.major-title span:nth-of-type(3){
+    color:green;
+}
+.major-title span:nth-of-type(4){
+    color:gold;
+}
+.major-title span:nth-of-type(5){
+    color:blue;
+}
+.major-title span:nth-of-type(6){
+    color:brown;
+}
+
+.major-title2{
+    color: white;
+    font-family: monospace;
+    font-size: 28px;
+}
+.major-title2 a{
+    color: white;
+    text-decoration: none;
+}
+
+.sub-title{
+    position: relative;
+    top: -10vh;
+    left: 36.5vh;
+    color: cyan;
+    font-size: 22px;
+    font-family: sans;
+}
+
+.ac-sub-title{
+    color: #f28b82;
+    font-family: monospace;
+    font-size: 24px;
+    margin: 5vh 10vw 5vh 5vw;
+}
+
+hr{
+    margin-bottom: 7vh;
+}
+
+.sub-title-3{
+    color: white;
+    font-size: 16px;
+    font-family: monospace;
+    font-weight: normal;
+}
+
+.form1 fieldset legend{
+    color: white;
+}
+
+.mag{
+    width: 2vw;
+    position: relative;
+    top: 4.8vh;
+    left: -18.5vw;
+}
+
+.cam{
+    width: 2vw;
+    position: relative;
+    left: 18.5vw;
+}
+
+.form1 input[type=text] {
+    height: var(--form-height);
+    width: var(--form-width);
+    border-radius: 40px;
+    border-width: 1px;
+    background-color: var(--bk-grnd-clr);
+    margin: -6vh auto 2vh auto;
+    color: white;
+    text-indent: 40px;
+    font-size: 16px;
+
+}
+
+.form1 input[type=submit] {
+    margin: 2px;
+    padding: 12px 22px 12px 22px;
+    color: white;
+    background-color: #303134;
+    border: none;
+}
+
+.form1 input[type=submit]:hover{
+    border: solid 1px;
+}
+
+.form2 input[type=submit]{
+    position: relative;
+    background-color: #4d90fe;
+    color: white;
+    padding: 5px 20px 5px 20px;
+    width: 150px;
+    left: calc(50vw - 150px);
+    margin: 2vh auto 2vh auto;
+    border: none;
+    font-weight: bold;
+}
+.form2 input[type=submit]:hover{
+    background-color: #357ae8;
+}
+
+.ad{
+    color: white;
+    background-color: var(--bk-grnd-clr);
+    width: 100%;
+    text-align: left;
+    margin-left: 30px;
+}
+
+.ad tr{
+    height: 7vh;
+}
+
+.ad input{
+    background-color: var(--bk-grnd-clr);
+    color: #C0C0C0;
+    border: 0.2px solid white;
+    height: 4vh;
+    border-color: #808080;
+    margin-right: 10px;
+}
+
+.ad td:nth-of-type(1){
+    width: 500px;
+}
+
+.ad td:nth-of-type(3){
+    width: 985px;
+    font-size: 14px;
+    color: #808080;
+}
+
+.ad span{
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: white;
+}
+
+.ad .br{
+    display: block;
+}
+
+.ad input{
+    width: 50vw;
+    height: 5vh;
+}
+
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
