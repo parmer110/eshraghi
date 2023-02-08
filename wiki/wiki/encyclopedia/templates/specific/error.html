@@ -1,0 +1,17 @@
+{% extends "encyclopedia/layout.html" %}
+{% load static %}
+
+{% block header %}
+    <link href="{{ bg }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+{{ header_title }}
+{% endblock %}
+
+{% block body %}
+<div class="bg"></div>
+<main class="content">
+    <h1>{{ message }}</h1>
+</main>
+{% endblock %}

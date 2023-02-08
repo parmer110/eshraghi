@@ -1,0 +1,21 @@
+
+.bg{
+    background-image: url("./error01.jpg");
+
+    
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    opacity: 0.6;
+}
+
+.content{
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    color: red;
+    font-weight: bolder;
+    font-family: sans-serif;
+}
