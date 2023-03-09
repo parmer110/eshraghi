@@ -25,7 +25,7 @@
                     <a href="{% url 'index' %}♥new♥">Create New Page</a>
                 </div>
                 <div>
-                    <a href="{% if entries %}{% url 'index'%}{{ entries|random }}{% endif %}">Random Page</a>
+                    <a href="{% if entries %}{% url 'index' %}♥♥random{% endif %}">Random Page</a>
                 </div>
                 {% block nav %}
                 {% endblock %}

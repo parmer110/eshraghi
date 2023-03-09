@@ -1,0 +1,224 @@
+body {
+    padding: 10px;
+}
+
+.color01 {
+    display: inline;
+    color: white;
+    background-color: rgb(143, 143, 143);
+    text-align:center;
+    vertical-align:middle;
+}
+
+table.activeListings {
+    border-collapse: separate;
+    border-spacing:0 15px;
+    width: 100%;
+}
+table.activeListings td {
+    border-top: 1px solid silver;
+    border-bottom: 1px solid silver;
+    padding: 5px;
+    height: 200px;
+    vertical-align: top;
+}
+
+table.activeListings td:nth-child(odd) {
+    border-left: 1px solid silver;
+    width: 300px;
+    text-align: center;
+    vertical-align: middle;
+}
+table.activeListings td:nth-child(even) {
+    border-right: 1px solid silver;
+}
+
+
+.auction_title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 1vh;
+}
+.auction_price {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 2vh;
+}
+.auction_description {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    margin-bottom: 3vh;
+}
+.auction_date {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: rgb(158, 158, 158);
+}
+
+
+.auction_img {
+    max-width: 300px;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+}
+
+table.activeListings td { 
+    cursor: pointer; 
+}
+
+header {
+    position:absolute; 
+    top:0px; 
+    left:0px; 
+    height:130px;
+    right:0px;
+    overflow:hidden;
+}
+
+main {
+    position:absolute; 
+    top:130px; 
+    bottom:45px; 
+    /* left:0px; 
+    right:0px;  */
+    overflow:auto;
+}
+
+footer {
+    position:absolute; 
+    bottom:0px; 
+    /* height:200px;  */
+    left:0px; 
+    right:0px; 
+    overflow:hidden;
+}
+
+.footer_hr, .header_hr {
+    margin: 0;
+    background: rgb(175, 175, 175);
+}
+ 
+.footer_h5 {
+    text-align: right;
+    margin-right: 20px;
+}
+
+/* Listing page */
+.img_listing {
+    max-width: 85%;
+    max-height: 85%;
+    width: auto;
+    height: auto;
+}
+
+.listing_description {
+    margin: 20px auto 20px auto;
+}
+
+.listing_w_l {
+    display: block;
+    margin-bottom: 20px;
+    text-align: center;
+    width:160px;
+    font-weight: bold;
+    background-color: rgb(148, 148, 148);
+    color: white;
+}
+.listing_w_l:hover {
+    background-color: black;
+    color: white;
+  }
+
+  .listing_price {
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  .listing_price_span {
+    font-weight: lighter;
+    font-size: medium;
+    color: rgb(117, 117, 117);
+  }
+
+  .listing_price_close {
+    font-weight:normal;
+    font-size:medium;
+    color: rgb(139, 37, 37);
+    background-color: blanchedalmond;
+  }
+  
+  .listing_bid {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    
+    .listing_sit {
+        margin-bottom: 0;
+    }
+    .listing_sit:nth-of-type(2) {
+      color: red;
+    }
+    
+    .listing_details_ul {
+        font-size: large;
+    }
+
+  .listing_form {
+    display: inline;
+  }
+  .listing_form [type="submit"] {
+    margin-bottom: 20px;
+  }
+  .listing_form_close {
+    display: inline;
+  }
+  .listing_form_close [type="submit"] {
+    margin-bottom: 20px;
+  }
+
+.nav-item:hover {
+    background-color:rgb(228, 228, 228);
+}
+ 
+.layout_news {
+    position: absolute;
+    top: 0;
+    left: calc(50% - 15vw);
+    background-color: greenyellow;
+    color:coral;
+    height:32px;
+}
+.layout_news p {
+    position: relative;
+    top: 0;
+    left: +5vw;
+    background-color: white;
+    color:orchid;    
+}
+
+.listing_textarera {
+    width: 100%;
+    height: 50px;
+}
+
+.listing_form_comment {
+    margin-bottom: 5px;
+}
+.listing_form_comment [type="submit"] {
+    margin-bottom: 20px;
+}
+
+.listing_comment {
+    border: 1px solid gray;
+    margin-bottom: 13px;
+    padding-bottom: 5px;
+    min-height: 80px;
+}
+
+.listing_comment_author {
+    color: rgb(110, 110, 110);
+    text-decoration: underline;
+    margin-bottom: 5px;
+}

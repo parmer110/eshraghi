@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse
 from markdown2 import Markdown
+import random
 
 from . import util
 
@@ -40,6 +41,7 @@ def index(request):
     })
 
 def entry(request, title):
+
     
     entry = util.get_entry(title)
 
@@ -118,3 +120,7 @@ def new(request):
     return render(request, "encyclopedia/editable.html", {
         "form": NewEntry()
     })
+
+def randoms (request):
+    entries = random.choice(util.list_entries())
+    return HttpResponseRedirect(reverse(entry, args=(entries, )))
