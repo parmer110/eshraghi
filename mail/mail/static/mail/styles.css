@@ -1,3 +1,35 @@
 textarea {
     min-height: 400px;
 }
+
+.title {
+    font-weight: bolder;
+}
+
+.emailHeader {
+    margin-bottom: 0px;
+}
+
+.mailTable {
+    width: 100%;
+}
+
+.readed {
+    background-color: rgb(202, 202, 202);
+}
+
+.unread {
+    background-color: white;
+}
+
+.emailCell {
+    cursor: pointer;
+}
+
+.emailRow {
+    border: 2px solid;
+}
+
+.tdArchive {
+    text-align: right;
+}
